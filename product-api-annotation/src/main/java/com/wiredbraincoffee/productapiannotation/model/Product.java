@@ -2,14 +2,18 @@ package com.wiredbraincoffee.productapiannotation.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
-
-@Document
+//@Document
+@Table
 public class Product {
     @Id
     private String id;
+    @Column
     private String name;
+    @Column
     private Double price;
 
     public Product() {

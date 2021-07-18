@@ -28,7 +28,7 @@ public class ProductApiAnnotationApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(ReactiveMongoOperations operations, ProductRepository repository) {
+	CommandLineRunner init(ProductRepository repository) {
 		return args -> {
 			Flux<Product> productFlux = Flux.just(
 					new Product(null, "Big Latte", 2.99),
@@ -36,9 +36,11 @@ public class ProductApiAnnotationApplication {
 					new Product(null, "Green Tea", 1.99))
 					.flatMap(repository::save);
 
-			productFlux
+			repository.deleteAll().thenMany(productFlux)
 					.thenMany(repository.findAll())
 					.subscribe(System.out::println);
+
+
 
             /*operations.collectionExists(Product.class)
                     .flatMap(exists -> exists ? operations.dropCollection(Product.class) : Mono.just(exists))
